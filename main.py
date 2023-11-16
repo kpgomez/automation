@@ -13,8 +13,11 @@ def create_folder(folder_name):
 
 
 # handle a deleted user by moving user documents into a temporary folder <- this is shutil move
-def delete_user():
+def delete_user(user_name):
     pass
+    # need name of user
+    # create temp folder
+    # move contents of deleted user
 
 
 # sort documents into appropriate folder according to their document type (ext) <- os.path.splitext()
@@ -32,6 +35,7 @@ def main():
     # create a menu-driven application
     while True:
         console.print(
+            "\n----- [bold underline]MAIN MENU[/bold underline] ------"
             "\n1. [bold green]Create[/bold green] a new folder"
             "\n2. [bold red]Delete[/bold red] a user"
             "\n3. [bold blue]Sort[/bold blue] documents"
@@ -48,24 +52,42 @@ def main():
 
         if choice == "1":
             while True:
-                folder_name = Prompt.ask("Enter [bold green]NAME[/bold green] of folder")
-                confirmation = Prompt.ask(f"You entered [bold underline green]{folder_name}[/bold underline green]. "
-                                          f"\nIs this correct? Enter (y)es or (n)o")
-                if confirmation == "y":
-                    # check if folder already exists in current directory
-                    current_dir = os.listdir(".")  # list of strings
-                    if folder_name in current_dir:
-                        console.print("Please enter a [bold red]different[/bold red] name as the folder "
-                                      "you specified already exists")
-                        continue
-                    else:
-                        create_folder(folder_name)
-                        return
+                folder_name = Prompt.ask("Enter [bold green]NAME[/bold green] of new folder [italic]or [bold green](r)"
+                                         "[/bold green]eturn to main menu[/italic]")
+                if folder_name == "r":
+                    break
                 else:
-                    continue
+                    confirmation = Prompt.ask(f"You entered [bold underline green]{folder_name}[/bold underline green]."
+                                              f"\nIs this correct? Enter (y)es or (n)o.")
+                    if confirmation == "y":
+                        # check if folder already exists in current directory
+                        current_dir = os.listdir(".")  # list of strings
+                        if folder_name in current_dir:
+                            console.print("Please enter a [bold red]different[/bold red] name as the folder "
+                                          "you specified already exists")
+                            continue
+                        else:
+                            create_folder(folder_name)
+                            break
+                    else:
+                        continue
 
         elif choice == "2":
-            delete_user()
+            # get path
+            current_dir = os.getcwd()
+            path = "assets/user-docs"
+            full_path = os.path.join(current_dir, path)
+            # list users
+            current_users = os.listdir(full_path)  # need to locate absolute path for assets/user-docs
+            console.print("List of all the users", current_users)  # show in table
+            while True:
+                # select user
+                user_name = Prompt.ask("Which user would you like to [bold red]delete?[/bold red]")
+                if user_name in current_users:
+                    delete_user(user_name)
+                else:
+                    console.print("User not found")
+                    continue
 
         elif choice == "3":
             sort_documents()
