@@ -60,9 +60,10 @@ def main():
                         continue
                     else:
                         create_folder(folder_name)
-                    return
+                        return
                 else:
                     continue
+
         elif choice == "2":
             delete_user()
 
