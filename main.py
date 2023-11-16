@@ -77,9 +77,29 @@ def main():
             current_dir = os.getcwd()
             path = "assets/user-docs"
             full_path = os.path.join(current_dir, path)
+
             # list users
             current_users = os.listdir(full_path)  # need to locate absolute path for assets/user-docs
-            console.print("List of all the users", current_users)  # show in table
+            user_table = Table(show_header=True, header_style="bold blue")
+            user_table.add_column("Name", style="dim", width=20)
+            user_table.add_column("Contents")
+
+            # for user in current_users:
+            #     print(user)
+
+            users = {user: "contents" for user in current_users}
+            print(users)
+            print(current_users)
+            for user in current_users:
+                print(os.listdir(os.path.join(full_path, user)))
+
+            # os.listdir(os.path.join(full_path, user)
+            for user in current_users:
+                user_table.add_row(user, "contents")
+
+            console.print(user_table)
+            # console.print("List of all the users", current_users)  # show in table
+
             while True:
                 # select user
                 user_name = Prompt.ask("Which user would you like to [bold red]delete?[/bold red]")
