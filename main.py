@@ -84,21 +84,12 @@ def main():
             user_table.add_column("Name", style="dim", width=20)
             user_table.add_column("Contents")
 
-            # for user in current_users:
-            #     print(user)
-
-            users = {user: "contents" for user in current_users}
-            print(users)
-            print(current_users)
+            # populate table
             for user in current_users:
-                print(os.listdir(os.path.join(full_path, user)))
+                user_table.add_row(user, str(os.listdir(os.path.join(full_path, user))))
 
-            # os.listdir(os.path.join(full_path, user)
-            for user in current_users:
-                user_table.add_row(user, "contents")
-
+            # show table
             console.print(user_table)
-            # console.print("List of all the users", current_users)  # show in table
 
             while True:
                 # select user
