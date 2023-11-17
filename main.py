@@ -53,9 +53,12 @@ def delete_user(user_name):
     shutil.move(full_path, "inactive-users")
 
 
-# sort documents into appropriate folder according to their document type (ext) <- os.path.splitext()
+# sort documents into appropriate folder according to their file type (ext) <- os.path.splitext()
 def sort_documents():
     pass
+    # make folders for each file type/ext
+    # iterate through the folders
+    # move folders to corresponding file type
 
 
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
@@ -114,7 +117,6 @@ def main():
                     delete_user(user_name)
                 else:
                     break
-
 
         elif choice == "3":
             sort_documents()
