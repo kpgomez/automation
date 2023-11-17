@@ -18,13 +18,39 @@ def create_folder(folder_name):
         console.print(f"[bold underline green]{folder_name}[/bold underline green] successfully created")
 
 
+def show_users():
+    # get path
+    current_dir = os.getcwd()
+    path = "assets/user-docs"
+    full_path = os.path.join(current_dir, path)
+
+    # list users
+    current_users = os.listdir(full_path)  # need to locate absolute path for assets/user-docs
+    user_table = Table(show_header=True, header_style="bold blue")
+    user_table.add_column("Name", style="dim", width=20)
+    user_table.add_column("Contents")
+
+    # populate table
+    for user in current_users:
+        user_table.add_row(user, str(os.listdir(os.path.join(full_path, user))))
+
+    # show table
+    console.print(user_table)
+    return current_users
+
 
 # handle a deleted user by moving user documents into a temporary folder <- this is shutil move
 def delete_user(user_name):
-    pass
-    # need name of user
-    # create temp folder
-    # move contents of deleted user
+    # create temporary folder
+    os.makedirs("inactive-users", exist_ok=True)
+
+    # get path
+    current_dir = os.getcwd()
+    path = "assets/user-docs/"
+    full_path = os.path.join(current_dir, path, user_name)
+
+    # move deleted_user to folder
+    shutil.move(full_path, "inactive-users")
 
 
 # sort documents into appropriate folder according to their document type (ext) <- os.path.splitext()
@@ -74,35 +100,21 @@ def main():
                         break
 
         elif choice == "2":
-            # get path
-            current_dir = os.getcwd()
-            path = "assets/user-docs"
-            full_path = os.path.join(current_dir, path)
-
-            # list users
-            current_users = os.listdir(full_path)  # need to locate absolute path for assets/user-docs
-            user_table = Table(show_header=True, header_style="bold blue")
-            user_table.add_column("Name", style="dim", width=20)
-            user_table.add_column("Contents")
-
-            # populate table
-            for user in current_users:
-                user_table.add_row(user, str(os.listdir(os.path.join(full_path, user))))
-
-            # show table
-            console.print(user_table)
-
+            current_users = show_users()
+            # select user
             while True:
-                # select user
                 user_name = Prompt.ask("[bold red]NAME[/bold red] of user to be [bold red]deleted[/bold red]"
                                        "[italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
-                if user_name in current_users:
-                    delete_user(user_name)
-                elif user_name == "r":
+                if user_name == "r":
                     break
-                else:
-                    console.print("There was an error. Please try again")
+                elif user_name not in current_users:
+                    console.print("Please try again")
                     continue
+                elif user_name in current_users:
+                    delete_user(user_name)
+                else:
+                    break
+
 
         elif choice == "3":
             sort_documents()
