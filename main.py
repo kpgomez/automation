@@ -8,8 +8,15 @@ from rich.table import Table
 
 # automate the creation of a folder <- this is os mkdir
 def create_folder(folder_name):
-    os.mkdir(folder_name)
-    console.print(f"[bold underline green]{folder_name}[/bold underline green] successfully created")
+    current_dir = os.listdir(".")  # list of strings
+    if folder_name in current_dir:
+        console.print("Please enter a [bold red]different[/bold red] name as the folder "
+                      "you specified already exists")
+        return
+    else:
+        os.mkdir(folder_name)
+        console.print(f"[bold underline green]{folder_name}[/bold underline green] successfully created")
+
 
 
 # handle a deleted user by moving user documents into a temporary folder <- this is shutil move
@@ -58,19 +65,13 @@ def main():
                     break
                 else:
                     confirmation = Prompt.ask(f"You entered [bold underline green]{folder_name}[/bold underline green]."
-                                              f"\nIs this correct? Enter (y)es or (n)o.")
+                                              f"\nIs this correct? Enter (y)es or (n)o or (r)eturn to main menu")
                     if confirmation == "y":
-                        # check if folder already exists in current directory
-                        current_dir = os.listdir(".")  # list of strings
-                        if folder_name in current_dir:
-                            console.print("Please enter a [bold red]different[/bold red] name as the folder "
-                                          "you specified already exists")
-                            continue
-                        else:
-                            create_folder(folder_name)
-                            break
-                    else:
+                        create_folder(folder_name)
+                    elif confirmation == "n":
                         continue
+                    else:
+                        break
 
         elif choice == "2":
             # get path
