@@ -52,8 +52,8 @@ def main():
 
         if choice == "1":
             while True:
-                folder_name = Prompt.ask("Enter [bold green]NAME[/bold green] of new folder [italic]or [bold green](r)"
-                                         "[/bold green]eturn to main menu[/italic]")
+                folder_name = Prompt.ask("Enter [bold green]NAME[/bold green] of new folder [italic]or "
+                                         "[bold green](r)[/bold green]eturn to main menu[/italic]")
                 if folder_name == "r":
                     break
                 else:
@@ -93,11 +93,14 @@ def main():
 
             while True:
                 # select user
-                user_name = Prompt.ask("Which user would you like to [bold red]delete?[/bold red]")
+                user_name = Prompt.ask("[bold red]NAME[/bold red] of user to be [bold red]deleted[/bold red]"
+                                       "[italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
                 if user_name in current_users:
                     delete_user(user_name)
+                elif user_name == "r":
+                    break
                 else:
-                    console.print("User not found")
+                    console.print("There was an error. Please try again")
                     continue
 
         elif choice == "3":
