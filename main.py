@@ -35,7 +35,7 @@ def show_users():
         user_table.add_row(user, str(os.listdir(os.path.join(full_path, user))))
 
     # show table
-    console.print(user_table)
+    console.print('List of [bold]CURRENT[/bold] users', user_table)
     return current_users
 
 
@@ -51,6 +51,7 @@ def delete_user(user_name):
 
     # move deleted_user to folder
     shutil.move(full_path, "inactive-users")
+    show_users()
 
 
 # sort documents into appropriate folder according to their file type (ext) <- os.path.splitext()
@@ -97,6 +98,7 @@ def main():
                                               f"\nIs this correct? Enter (y)es or (n)o or (r)eturn to main menu")
                     if confirmation == "y":
                         create_folder(folder_name)
+                        break
                     elif confirmation == "n":
                         continue
                     else:
