@@ -51,7 +51,7 @@ def delete_user(user_name):
 
     # move deleted_user to folder
     shutil.move(full_path, "inactive-users")
-    show_users()
+    show_users('user')
 
 
 # sort documents into appropriate folder according to their file type (ext) <- os.path.splitext()
@@ -65,7 +65,6 @@ def sort_documents(folder: str):
 
     for subdir, dirs, files in os.walk(root_dir):
         for file in files:
-            # changes directory to current user folder
             os.chdir(root_dir)
 
             new_folder_path = os.path.join(root_dir, file)
@@ -80,15 +79,20 @@ def sort_documents(folder: str):
                 shutil.move(new_folder_path, "mail")
             else:
                 break
-    print("SUCCESS! Files have been sorted.")
+
+    console.print(f"[bold violet]SUCCESS![/bold violet] Files for [bold blue]{folder}[/bold blue] have been sorted.")
     os.chdir(current_dir)
 
 
-
-
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
-def parse_files():
-    ...
+def parse_files(user):
+    # open log file
+    # read file
+    pass
+    # os.chdir()
+    # with open("errors.log", "a+") as file:
+    #
+    # print("cwd", os.getcwd())
 
 
 def rename_file():
@@ -104,7 +108,7 @@ def main():
             "\n1. [bold gold3]Create[/bold gold3] a new folder"
             "\n2. [bold red]Delete[/bold red] a user"
             "\n3. [bold blue]Sort[/bold blue] documents"
-            "\n4. [bold magenta]Organize[/bold magenta] log files"
+            "\n4. [bold magenta]Parse[/bold magenta] log files"
             "\n5. [bold dark_orange]Rename[/bold dark_orange] file"
             "\n6. [bold yellow]Exit[/bold yellow] system"
         )
@@ -169,7 +173,21 @@ def main():
                     break
 
         elif choice == "4":
-            parse_files()
+            current_folders = show_users("folder")
+
+            while True:
+                folder = Prompt.ask("Please enter [bold blue]NAME[/bold blue] of user containing log files you would like to "
+                                    "[bold blue]parse[/bold blue] [italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
+                if folder == "r":
+                    break
+                elif folder not in current_folders:
+                    console.print("Please try again")
+                    continue
+                elif folder in current_folders:
+                    parse_files(folder)
+                    break
+                else:
+                    break
 
         elif choice == "5":
             rename_file()
