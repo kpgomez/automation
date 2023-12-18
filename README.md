@@ -3,6 +3,7 @@
 ### Author: KP Gomez
 ### Links and Resources
 - [Class Demo](https://github.com/codefellows/seattle-code-python-401n8/tree/main/class-19)
+- [Rich Standard Colors](https://rich.readthedocs.io/en/stable/appendix/colors.html)
 ### Setup
 ```bash
 pip install rich

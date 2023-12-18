@@ -18,7 +18,7 @@ def create_folder(folder_name):
         console.print(f"[bold underline green]{folder_name}[/bold underline green] successfully created")
 
 
-def show_users():
+def show_users(display: str):
     # get path
     current_dir = os.getcwd()
     path = "assets/user-docs"
@@ -35,7 +35,7 @@ def show_users():
         user_table.add_row(user, str(os.listdir(os.path.join(full_path, user))))
 
     # show table
-    console.print('List of [bold]CURRENT[/bold] users', user_table)
+    console.print(f"List of [bold]CURRENT[/bold] {display}s", user_table)
     return current_users
 
 
@@ -55,16 +55,27 @@ def delete_user(user_name):
 
 
 # sort documents into appropriate folder according to their file type (ext) <- os.path.splitext()
-def sort_documents():
-    pass
-    # make folders for each file type/ext
+# shutil (shell utilities) lets you move copy, move, rename, and delete files
+def sort_documents(folder: str):
+    # find directory by folder name, example is root/assets/user-docs/folder
+    current_dir = os.getcwd()
+    path = "assets/user-docs"
+    full_path = os.path.join(current_dir, path, folder)
+    # print('path', full_path)
+
+    # make folders for each file type/ext specifically move log files into logs folder and email files in mail folder
+
     # iterate through the folders
     # move folders to corresponding file type
 
 
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
 def organize_files():
-    pass
+    ...
+
+
+def rename_file():
+    ...
 
 
 # main entry-point, application driver
@@ -73,16 +84,17 @@ def main():
     while True:
         console.print(
             "\n----- [bold underline]MAIN MENU[/bold underline] ------"
-            "\n1. [bold green]Create[/bold green] a new folder"
+            "\n1. [bold gold3]Create[/bold gold3] a new folder"
             "\n2. [bold red]Delete[/bold red] a user"
             "\n3. [bold blue]Sort[/bold blue] documents"
             "\n4. [bold magenta]Organize[/bold magenta] log files"
-            "\n5. [bold yellow]Exit[/bold yellow] system"
+            "\n5. [bold dark_orange]Rename[/bold dark_orange] file"
+            "\n6. [bold yellow]Exit[/bold yellow] system"
         )
         choice = Prompt.ask(
             "\n[bold violet]Selection[/bold violet]",
-            choices=["1", "2", "3", "4", "5"],
-            default="5",
+            choices=["1", "2", "3", "4", "5", "6"],
+            default="6",
             show_choices=False,
             show_default=False,
         )
@@ -105,7 +117,7 @@ def main():
                         break
 
         elif choice == "2":
-            current_users = show_users()
+            current_users = show_users("user")
             # select user
             while True:
                 user_name = Prompt.ask("[bold red]NAME[/bold red] of user to be [bold red]deleted[/bold red]"
@@ -121,10 +133,28 @@ def main():
                     break
 
         elif choice == "3":
-            sort_documents()
+            current_folders = show_users("folder")
+            print(current_folders)
+            # select folder
+            while True:
+                folder = Prompt.ask("[bold blue]NAME[/bold blue] of folder to be [bold blue]sorted[/bold blue]"
+                                    "[italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
+                if folder == "r":
+                    break
+                elif folder not in current_folders:
+                    console.print("Please try again")
+                    continue
+                elif folder in current_folders:
+                    # print('folder', folder)
+                    sort_documents(folder)
+                else:
+                    break
 
         elif choice == "4":
             organize_files()
+
+        elif choice == "5":
+            rename_file()
 
         else:
             break
