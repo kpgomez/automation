@@ -59,14 +59,34 @@ def delete_user(user_name):
 def sort_documents(folder: str):
     # find directory by folder name, example is root/assets/user-docs/folder
     current_dir = os.getcwd()
-    path = "assets/user-docs"
-    full_path = os.path.join(current_dir, path, folder)
-    # print('path', full_path)
+    path = "assets/user-docs/"
+    root_dir = os.path.join(current_dir, path, folder)
+    print('root_dir', root_dir)
 
-    # make folders for each file type/ext specifically move log files into logs folder and email files in mail folder
+    for subdir, dirs, files in os.walk(root_dir):
+        for file in files:
+            # print("subdir", subdir)
+            # print("dirs", dirs)
+            # print("file", file)
+            # name_of_file = file.find(".")
+            # print(os.path.join(subdir, file))
+            root, ext = os.path.splitext(file)
+            if ext == ".log":
+                print("cwd", os.getcwd())
+                # os.makedirs("logs", exist_ok=True)
+                # new_folder = os.path.join(root_dir, file)
+                # shutil.move(new_folder, "logs")
+            elif ext == ".mail":
+                pass
+            elif ext == ".txt":
+                pass
+            print(f"Root of the file path: {root}")
+            print(f"Ext of the file path: {ext}")
 
-    # iterate through the folders
-    # move folders to corresponding file type
+            # make folders for each file type/ext specifically move log files into logs folder and
+            # email files in mail folder
+            # iterate through the folders
+            # move folders to corresponding file type
 
 
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
