@@ -59,38 +59,35 @@ def delete_user(user_name):
 def sort_documents(folder: str):
     # find directory by folder name, example is root/assets/user-docs/folder
     current_dir = os.getcwd()
+    print(current_dir)
     path = "assets/user-docs/"
     root_dir = os.path.join(current_dir, path, folder)
-    print('root_dir', root_dir)
 
     for subdir, dirs, files in os.walk(root_dir):
         for file in files:
-            # print("subdir", subdir)
-            # print("dirs", dirs)
-            # print("file", file)
-            # name_of_file = file.find(".")
-            # print(os.path.join(subdir, file))
+            # changes directory to current user folder
+            os.chdir(root_dir)
+
+            new_folder_path = os.path.join(root_dir, file)
+
+            # split file into filename, ext
             root, ext = os.path.splitext(file)
             if ext == ".log":
-                print("cwd", os.getcwd())
-                # os.makedirs("logs", exist_ok=True)
-                # new_folder = os.path.join(root_dir, file)
-                # shutil.move(new_folder, "logs")
+                os.makedirs("logs", exist_ok=True)
+                shutil.move(new_folder_path, "logs")
             elif ext == ".mail":
-                pass
-            elif ext == ".txt":
-                pass
-            print(f"Root of the file path: {root}")
-            print(f"Ext of the file path: {ext}")
+                os.makedirs("mail", exist_ok=True)
+                shutil.move(new_folder_path, "mail")
+            else:
+                break
+    print("SUCCESS! Files have been sorted.")
+    os.chdir(current_dir)
 
-            # make folders for each file type/ext specifically move log files into logs folder and
-            # email files in mail folder
-            # iterate through the folders
-            # move folders to corresponding file type
+
 
 
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
-def organize_files():
+def parse_files():
     ...
 
 
@@ -154,11 +151,11 @@ def main():
 
         elif choice == "3":
             current_folders = show_users("folder")
-            print(current_folders)
+            # print(current_folders)
             # select folder
             while True:
-                folder = Prompt.ask("[bold blue]NAME[/bold blue] of folder to be [bold blue]sorted[/bold blue]"
-                                    "[italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
+                folder = Prompt.ask("Please enter [bold blue]NAME[/bold blue] of folder [bold blue]you would like to sort"
+                                    "[/bold blue][italic] or [bold green](r)[/bold green]eturn to main menu[/italic]")
                 if folder == "r":
                     break
                 elif folder not in current_folders:
@@ -167,11 +164,12 @@ def main():
                 elif folder in current_folders:
                     # print('folder', folder)
                     sort_documents(folder)
+                    break
                 else:
                     break
 
         elif choice == "4":
-            organize_files()
+            parse_files()
 
         elif choice == "5":
             rename_file()
