@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 
 from rich.console import Console
@@ -86,13 +87,31 @@ def sort_documents(folder: str):
 
 # parse a log file for errors and warnings, create new log file, separated by type in target directory <- use re
 def parse_files(user):
-    # open log file
-    # read file
-    pass
-    # os.chdir()
-    # with open("errors.log", "a+") as file:
-    #
-    # print("cwd", os.getcwd())
+    print("cwd", os.getcwd())
+    current_dir = os.getcwd()
+    sub_dir = "assets/user-docs"
+
+    # https://chat.openai.com/c/e535a0bc-da2b-4fb7-ace1-d3fa912a592e
+    file = "log1.log" if user == "user1" else ("log2.log" if user == "user2" else "default.log")
+
+    file_path = os.path.join(current_dir, sub_dir, user, "logs")
+
+    os.chdir(sub_dir)
+    os.chdir(user)
+    os.chdir("logs")
+
+    with open(file, "r") as original_log:
+        content = original_log.readlines()
+        with open("errors.log", "a+") as error_log:
+            for line in content:
+                match = re.search(r"ERROR", line)
+                if match:
+                    error_log.write(line)
+        with open("warnings.log", "a+") as warning_log:
+            for line in content:
+                match = re.search(r"WARNING", line)
+                if match:
+                    warning_log.write(line)
 
 
 def rename_file():
