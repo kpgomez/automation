@@ -114,8 +114,33 @@ def parse_files(user):
                     warning_log.write(line)
 
 
-def rename_file():
-    ...
+def rename_email(folder):
+    print(os.getcwd())
+    current_dir = os.getcwd()
+    sub_dir = "assets/user-docs"
+
+    # https://chat.openai.com/c/e535a0bc-da2b-4fb7-ace1-d3fa912a592e
+    # old name == file
+    file = "email1.mail" if folder == "user1" else ("email2.mail" if folder == "user2" else "default.log")
+
+    # file_path = os.path.join(current_dir, sub_dir, user, "logs")
+
+    os.chdir(sub_dir)
+    os.chdir(folder)
+
+    # read email and name accordingly
+    # new name "sender-recipient-subject"
+    with open(file, "r") as original_email:
+        content = original_email.readlines()
+        header = "".join(content[0:3])
+
+        # https://chat.openai.com/c/b9f2681a-eb84-4369-bfdd-2eb7e4706527
+        new_name = " ".join(header.splitlines())
+        ext = ".email"
+
+        full_file_name = new_name + ext
+
+        os.rename(file, full_file_name)
 
 
 # main entry-point, application driver
@@ -209,7 +234,21 @@ def main():
                     break
 
         elif choice == "5":
-            rename_file()
+            current_folders = show_users("folder")
+            while True:
+                folder = Prompt.ask("Please enter [bold blue]NAME[/bold blue] of user containing [bold blue underline]emails "
+                                    "[/bold blue underline]you would like to [bold blue]rename[/bold blue] [italic] or [bold green]"
+                                    "(r)[/bold green]eturn to main menu[/italic]")
+                if folder == "r":
+                    break
+                elif folder not in current_folders:
+                    console.print("Please try again")
+                    continue
+                elif folder in current_folders:
+                    rename_email(folder)
+                    break
+                else:
+                    break
 
         else:
             break
